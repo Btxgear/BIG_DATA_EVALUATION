@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  hadoop-worker1:
+    image: madjidtaoualit/hadoop-cluster:latest
+    hostname: hadoop-worker1
+    container_name: hadoop-worker1
+    ports:
+      - "8040:8042"
+    networks:
+      - hadoop
+    platform: linux/amd64
+
+  hadoop-worker2:
+    image: madjidtaoualit/hadoop-cluster:latest
+    hostname: hadoop-worker2
+    container_name: hadoop-worker2
+    ports:
+      - "8041:8042"
+    networks:
+      - hadoop
+    platform: linux/amd64
+
+  hadoop-master:
+    image: madjidtaoualit/hadoop-cluster:latest
+    hostname: hadoop-master
+    container_name: hadoop-master
+    ports:
+      - "9870:9870"
+      - "8088:8088"
+      - "7077:7077"
+      - "16010:16010"
+    networks:
+      - hadoop
+    depends_on:
+      - hadoop-worker1
+      - hadoop-worker2
+    platform: linux/amd64
+    volumes:
+      - ./start-up-script/start-up.sh:/root/start-up.sh
+      - ./data/netflix-data.csv:/root/netflix-data.csv
+      - ./back/api/bigdata_evaluation_api.py:/root/api/bigdata_evaluation_api.py
+      - ./jar/netflix_processing.jar:/root/netflix_processing.jar
+    command: bash -c "/root/start-up.sh"
+
+networks:
+  hadoop:
+    driver: bridge
