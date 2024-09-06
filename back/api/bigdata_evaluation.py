@@ -16,7 +16,7 @@ spark = SparkSession.builder \
 def get_netflix_data_file():
     try:
         # Chemin HDFS du fichier
-        hdfs_path = "hdfs://hadoop-master:9000/user/root/netflix_cleaned_data/"
+        hdfs_path = "hdfs://hadoop-master:9000/user/root/netflix_cleaned/"
 
         # Créer un répertoire temporaire local
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -61,7 +61,7 @@ def get_content_type_repartition():
 @app.route('/get-year-repartition', methods=['GET'])
 def get_country_repartition():
     try:
-        df = spark.read.csv("hdfs://hadoop-master:9000/user/root/year_repartition/", header=True, inferSchema=True)
+        df = spark.read.csv("hdfs://hadoop-master:9000/user/root/release_year_repartition/", header=True, inferSchema=True)
 
         return df.toPandas().to_json(orient="records")
 
@@ -81,7 +81,7 @@ def get_director_repartition():
 @app.route('/get-added-datetime-distribution', methods=['GET'])
 def get_added_datetime_distribution():
     try:
-        df = spark.read.csv("hdfs://hadoop-master:9000/user/root/added_datetime_distribution/", header=True, inferSchema=True)
+        df = spark.read.csv("hdfs://hadoop-master:9000/user/root/added_date_repartition/", header=True, inferSchema=True)
 
         return df.toPandas().to_json(orient="records")
 

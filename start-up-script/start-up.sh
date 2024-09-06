@@ -14,7 +14,7 @@ hdfs dfs -put input/netflix-data.csv
 
 spark-submit --class spark.batch.DataCleaner --master yarn /root/netflix_processing.jar input/netflix-data.csv netflix_cleaned # CLEANING DATA
 
-spark-submit --class spark.batch.ContentTypeRepartition --master yarn /root/netflix_processing.jar netflix_cleaned content_type # CONTENT TYPE REPARTITION
+spark-submit --class spark.batch.ContentTypeRepartition --master yarn /root/netflix_processing.jar netflix_cleaned content_type_repartition # CONTENT TYPE REPARTITION
 
 spark-submit --class spark.batch.CountryRepartition --master yarn /root/netflix_processing.jar netflix_cleaned country_repartition # COUNTRY REPARTITION
 
