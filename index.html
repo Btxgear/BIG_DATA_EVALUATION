@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Netflix Movies and TV Shows</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/b8a4c64a0f.js" crossorigin="anonymous"></script>
@@ -54,6 +55,7 @@
         from {
             filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(255, 0, 0, 0.2));
         }
+
         to {
             filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.8));
         }
@@ -65,7 +67,10 @@
         padding-bottom: 30px;
     }
 
-    #contentTypeChart, #releaseYearChart, #directorChart, #dateAddedChart {
+    #contentTypeChart,
+    #releaseYearChart,
+    #directorChart,
+    #dateAddedChart {
         width: 500px;
         max-width: 800px;
         margin: 0 auto;
@@ -116,373 +121,380 @@
         margin-top: 20px;
     }
 </style>
+
 <body>
-<img id="logo" src="img/netflix-1669123431-logotic-brand.svg">
-<div class="title-background">
-    <h1 class="text-center" style="padding-top:200px; padding-bottom: 150px;">Netflix Movies and TV Shows<br>Visualization
-    </h1>
-</div>
-<h2 class="title">Répartition des types de contenu (Films vs Séries TV)</h2>
-<canvas id="contentTypeChart"></canvas>
-<a href="./data/contentTypeChart.csv" download class="download-btn">Télécharger CSV</a>
+    <img id="logo" src="img/netflix-1669123431-logotic-brand.svg">
+    <div class="title-background">
+        <h1 class="text-center" style="padding-top:200px; padding-bottom: 150px;">Netflix Movies and TV
+            Shows<br>Visualization
+        </h1>
+    </div>
+    <h2 class="title">Répartition des types de contenu (Films vs Séries TV)</h2>
+    <canvas id="contentTypeChart"></canvas>
+    <a href="./data/contentTypeChart.csv" download class="download-btn">Télécharger CSV</a>
 
-<h2 class="title">Analyse des réalisateurs</h2>
-<canvas id="directorChart"></canvas>
-<a href="./data/directorChart.csv" download class="download-btn">Télécharger CSV</a>
+    <h2 class="title">Analyse des réalisateurs</h2>
+    <canvas id="directorChart"></canvas>
+    <a href="./data/directorChart.csv" download class="download-btn">Télécharger CSV</a>
 
-<h2 class="title">Répartition par pays d'origine</h2>
-<canvas id="countryChart"></canvas>
-<a href="./data/countryChart.csv" download class="download-btn">Télécharger CSV</a>
+    <h2 class="title">Répartition par pays d'origine</h2>
+    <canvas id="countryChart"></canvas>
+    <a href="./data/countryChart.csv" download class="download-btn">Télécharger CSV</a>
 
-<h2 class="title">Répartition par année de sortie</h2>
-<canvas id="releaseYearChart"></canvas>
-<a href="./data/releaseYearChart.csv" download class="download-btn">Télécharger CSV</a>
+    <h2 class="title">Répartition par année de sortie</h2>
+    <canvas id="releaseYearChart"></canvas>
+    <a href="./data/releaseYearChart.csv" download class="download-btn">Télécharger CSV</a>
 
-<h2 class="title">Distribution des dates d'ajout des contenus</h2>
-<div class="text-center">
-    <label for="yearSelect">Sélectionner une année : </label>
-    <select id="yearSelect" class="form-select" style="width: 200px; display: inline-block;">
-        <option value="2021">2021</option>
-        <option value="2022">2022</option>
-        <option value="2023">2023</option>
-        <option value="2024">2024</option>
-    </select>
-</div>
-<canvas id="dateAddedChart"></canvas>
+    <h2 class="title">Distribution des dates d'ajout des contenus</h2>
+    <div class="text-center">
+        <label for="yearSelect">Sélectionner une année : </label>
+        <select id="yearSelect" class="form-select" style="width: 200px; display: inline-block;">
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+    </div>
+    <canvas id="dateAddedChart"></canvas>
 
-<a href="./data/dateAddedChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a href="./data/dateAddedChart.csv" download class="download-btn">Télécharger CSV</a>
 
-<h3 class="text-center" style="margin-top: 100px;">Dataset utilisé</h3>
-<a href="./data/netflix_titles.csv" download class="download-btn-2">Télécharger le dataset</a>
-<script>
-    function parseCSV(csvData) {
-        const rows = csvData.split('\n').slice(1);
-        const labels = [];
-        const data = [];
+    <h3 class="text-center" style="margin-top: 100px;">Dataset utilisé</h3>
+    <a href="./data/netflix_titles.csv" download class="download-btn-2">Télécharger le dataset</a>
+    <script>
+        function parseCSV(csvData) {
+            const rows = csvData.split('\n').slice(1);
+            const labels = [];
+            const data = [];
 
-        rows.forEach(row => {
-            const [type, count] = row.split(',');
-            labels.push(type);
-            data.push(count);
-        });
-
-        return {labels, data};
-    }
-
-    fetch('data/contentTypeChart.csv')
-        .then(response => response.text())
-        .then(csvData => {
-            const {labels, data} = parseCSV(csvData);
-            const ctx = document.getElementById('contentTypeChart').getContext('2d');
-            const contentTypeChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels,
-                    datasets: [{
-                        data,
-                        backgroundColor: ['#C4DFE6', '#66A5AD'],
-                        borderColor: '#221F1F',
-                        borderWidth: 5
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                color: 'white'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    fetch('data/directorChart.csv')
-        .then(response => response.text())
-        .then(csvData => {
-            const {labels, data} = parseCSV(csvData);
-            const ctx = document.getElementById('directorChart').getContext('2d');
-            const directorChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Nombre de films/séries',
-                        data,
-                        backgroundColor: '#D3C5E5'
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Nombre de films/séries',
-                                color: '#8f8f8f'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Réalisateurs',
-                                color: '#8f8f8f'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#FFFFFF'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    fetch('data/countryChart.csv')
-        .then(response => response.text())
-        .then(csvData => {
-            const {labels, data} = parseCSV(csvData);
-            const ctx = document.getElementById('countryChart').getContext('2d');
-            const countryChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Nombre de contenus',
-                        data,
-                        backgroundColor: '#F1D3B2'
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Pays',
-                                color: '#8f8f8f'
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Nombre de contenus',
-                                color: '#8f8f8f'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#FFFFFF'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    fetch('data/releaseYearChart.csv')
-        .then(response => response.text())
-        .then(csvData => {
-            const {labels, data} = parseCSV(csvData);
-            const ctx = document.getElementById('releaseYearChart').getContext('2d');
-            const releaseYearChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Nombre de contenus',
-                        data,
-                        backgroundColor: '#FFCE56',
-                        borderColor: '#FFCE56',
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Année',
-                                color: '#8f8f8f'
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Nombre de contenus',
-                                color: '#8f8f8f'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#FFFFFF'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    fetch('data/dateAddedChart.csv')
-        .then(response => response.text())
-        .then(csvData => {
-            const yearSelect = document.getElementById('yearSelect');
-
-            function filterByYear(year) {
-                const {labels, data} = parseCSV(csvData);
-                const filteredLabels = [];
-                const filteredData = [];
-                labels.forEach((label, index) => {
-                    if (label.startsWith(year)) {
-                        filteredLabels.push(label);
-                        filteredData.push(data[index]);
-                    }
-                });
-                return {filteredLabels, filteredData};
-
+            if (rows[rows.length - 1] === '') {
+                rows.pop();
             }
 
-            function updateChart(filteredLabels, filteredData, selectedYear) {
-                const monthMapping = {
-                    '-01': 'Janvier',
-                    '-02': 'Février',
-                    '-03': 'Mars',
-                    '-04': 'Avril',
-                    '-05': 'Mai',
-                    '-06': 'Juin',
-                    '-07': 'Juillet',
-                    '-08': 'Août',
-                    '-09': 'Septembre',
-                    '-10': 'Octobre',
-                    '-11': 'Novembre',
-                    '-12': 'Décembre'
-                };
-
-                const mappedLabels = filteredLabels.map(label => {
-                    const monthSuffix = label.slice(-3);
-                    return monthMapping[monthSuffix] || label;
-                });
-                dateAddedChart.data.labels = mappedLabels;
-                dateAddedChart.data.datasets[0].data = filteredData;
-                dateAddedChart.data.datasets[0].label = `Nombre de contenus ajoutés en ${selectedYear}`;
-                dateAddedChart.data.datasets[1].data = filteredData;
-                dateAddedChart.data.datasets[1].label = `Nombre de contenus ajoutés en ${selectedYear}`;
-                dateAddedChart.update();
-            }
-
-            yearSelect.addEventListener('change', () => {
-                const selectedYear = yearSelect.value;
-                const {filteredLabels, filteredData} = filterByYear(selectedYear);
-                updateChart(filteredLabels, filteredData, selectedYear);
+            rows.forEach(row => {
+                const [type, count] = row.split(',');
+                labels.push(type);
+                data.push(count);
             });
 
-            const {labels, data} = parseCSV(csvData);
-            const ctx = document.getElementById('dateAddedChart').getContext('2d');
-            const dateAddedChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
-                        type: 'bar',
-                        label: `Nombre de contenus ajoutés en ${yearSelect.value}`,
-                        data,
-                        backgroundColor: 'rgba(0, 123, 255, 0.6)',
-                        borderWidth: 1
-                    }, {
-                        type: 'line',
-                        label: `Nombre de contenus ajoutés en ${yearSelect.value}`,
-                        data,
-                        borderColor: 'rgb(85,170,255)',
-                        backgroundColor: 'rgba(85,170,255)',
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Mois',
-                                color: '#8f8f8f'
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                color: '#FFFFFF'
-                            },
-                            grid: {
-                                color: '#6b6b6b'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Nombre de contenus',
-                                color: '#8f8f8f'
-                            }
-                        }
+            return { labels, data };
+        }
+
+        fetch('data/contentTypeChart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const { labels, data } = parseCSV(csvData);
+                const ctx = document.getElementById('contentTypeChart').getContext('2d');
+                const contentTypeChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data,
+                            backgroundColor: ['#C4DFE6', '#66A5AD'],
+                            borderColor: '#221F1F',
+                            borderWidth: 5
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#FFFFFF'
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    color: 'white'
+                                }
                             }
                         }
                     }
-                }
+                });
             });
-            const yearSelected = yearSelect.value;
-            const {filteredLabels, filteredData} = filterByYear(yearSelected);
-            updateChart(filteredLabels, filteredData, yearSelected);
-        });
-</script>
+
+        fetch('data/directorChart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const { labels, data } = parseCSV(csvData);
+                const ctx = document.getElementById('directorChart').getContext('2d');
+                const directorChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Nombre de films/séries',
+                            data,
+                            backgroundColor: '#D3C5E5'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Nombre de films/séries',
+                                    color: '#8f8f8f'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Réalisateurs',
+                                    color: '#8f8f8f'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#FFFFFF'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+        fetch('data/countryChart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const { labels, data } = parseCSV(csvData);
+                const ctx = document.getElementById('countryChart').getContext('2d');
+                const countryChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Nombre de contenus',
+                            data,
+                            backgroundColor: '#F1D3B2'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Pays',
+                                    color: '#8f8f8f'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Nombre de contenus',
+                                    color: '#8f8f8f'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#FFFFFF'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+        fetch('data/releaseYearChart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const { labels, data } = parseCSV(csvData);
+                const ctx = document.getElementById('releaseYearChart').getContext('2d');
+                const releaseYearChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Nombre de contenus',
+                            data,
+                            backgroundColor: '#FFCE56',
+                            borderColor: '#FFCE56',
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Année',
+                                    color: '#8f8f8f'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Nombre de contenus',
+                                    color: '#8f8f8f'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#FFFFFF'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+        fetch('data/dateAddedChart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const yearSelect = document.getElementById('yearSelect');
+
+                function filterByYear(year) {
+                    const { labels, data } = parseCSV(csvData);
+                    const filteredLabels = [];
+                    const filteredData = [];
+                    labels.forEach((label, index) => {
+                        if (label.startsWith(year)) {
+                            filteredLabels.push(label);
+                            filteredData.push(data[index]);
+                        }
+                    });
+                    return { filteredLabels, filteredData };
+
+                }
+
+                function updateChart(filteredLabels, filteredData, selectedYear) {
+                    const monthMapping = {
+                        '-01': 'Janvier',
+                        '-02': 'Février',
+                        '-03': 'Mars',
+                        '-04': 'Avril',
+                        '-05': 'Mai',
+                        '-06': 'Juin',
+                        '-07': 'Juillet',
+                        '-08': 'Août',
+                        '-09': 'Septembre',
+                        '-10': 'Octobre',
+                        '-11': 'Novembre',
+                        '-12': 'Décembre'
+                    };
+
+                    const mappedLabels = filteredLabels.map(label => {
+                        const monthSuffix = label.slice(-3);
+                        return monthMapping[monthSuffix] || label;
+                    });
+                    dateAddedChart.data.labels = mappedLabels;
+                    dateAddedChart.data.datasets[0].data = filteredData;
+                    dateAddedChart.data.datasets[0].label = `Nombre de contenus ajoutés en ${selectedYear}`;
+                    dateAddedChart.data.datasets[1].data = filteredData;
+                    dateAddedChart.data.datasets[1].label = `Nombre de contenus ajoutés en ${selectedYear}`;
+                    dateAddedChart.update();
+                }
+
+                yearSelect.addEventListener('change', () => {
+                    const selectedYear = yearSelect.value;
+                    const { filteredLabels, filteredData } = filterByYear(selectedYear);
+                    updateChart(filteredLabels, filteredData, selectedYear);
+                });
+
+                const { labels, data } = parseCSV(csvData);
+                const ctx = document.getElementById('dateAddedChart').getContext('2d');
+                const dateAddedChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            type: 'bar',
+                            label: `Nombre de contenus ajoutés en ${yearSelect.value}`,
+                            data,
+                            backgroundColor: 'rgba(0, 123, 255, 0.6)',
+                            borderWidth: 1
+                        }, {
+                            type: 'line',
+                            label: `Nombre de contenus ajoutés en ${yearSelect.value}`,
+                            data,
+                            borderColor: 'rgb(85,170,255)',
+                            backgroundColor: 'rgba(85,170,255)',
+                            fill: false,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Mois',
+                                    color: '#8f8f8f'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#FFFFFF'
+                                },
+                                grid: {
+                                    color: '#6b6b6b'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Nombre de contenus',
+                                    color: '#8f8f8f'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#FFFFFF'
+                                }
+                            }
+                        }
+                    }
+                });
+                const yearSelected = yearSelect.value;
+                const { filteredLabels, filteredData } = filterByYear(yearSelected);
+                updateChart(filteredLabels, filteredData, yearSelected);
+            });
+    </script>
 </body>
+
 </html>
