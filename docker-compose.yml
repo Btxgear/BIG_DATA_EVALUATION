@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   hadoop-worker1:
@@ -9,7 +9,9 @@ services:
       - "8040:8042"
     networks:
       - hadoop
-    platform: linux/amd64
+    tty: true
+    stdin_open: true
+    command: /bin/bash -c "service ssh start && tail -f /dev/null"  # Laisse le worker actif
 
   hadoop-worker2:
     image: madjidtaoualit/hadoop-cluster:latest
@@ -19,7 +21,9 @@ services:
       - "8041:8042"
     networks:
       - hadoop
-    platform: linux/amd64
+    tty: true
+    stdin_open: true
+    command: /bin/bash -c "service ssh start && tail -f /dev/null"  # Laisse le worker actif
 
   hadoop-master:
     image: madjidtaoualit/hadoop-cluster:latest
@@ -30,18 +34,27 @@ services:
       - "8088:8088"
       - "7077:7077"
       - "16010:16010"
+      - "5000:5000" # Port pour l'API Flask
     networks:
       - hadoop
-    depends_on:
-      - hadoop-worker1
-      - hadoop-worker2
-    platform: linux/amd64
+    tty: true
+    stdin_open: true
     volumes:
       - ./start-up-script/start-up.sh:/root/start-up.sh
       - ./data/netflix-data.csv:/root/netflix-data.csv
-      - ./back/api/bigdata_evaluation_api.py:/root/api/bigdata_evaluation_api.py
+      - ./back/api/bigdata_evaluation.py:/root/api/bigdata_evaluation.py
       - ./jar/netflix_processing.jar:/root/netflix_processing.jar
-    command: bash -c "/root/start-up.sh"
+    command: /bin/bash -c "service ssh start && /root/start-hadoop.sh && tail -f /dev/null"  # Démarre le SSH et Hadoop
+
+  front:
+    image: nginx:alpine
+    container_name: front
+    networks:
+      - hadoop
+    ports:
+      - "80:80"
+    volumes:
+      - ./front:/usr/share/nginx/html
 
 networks:
   hadoop:
