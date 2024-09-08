@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Netflix Movies and TV Shows</title>
+    <link rel="icon" href="img/netflix-square-logotic.png" type="image/png">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="loading.css">
+</head>
+<body>
+<div class="spinner-container">
+    <span class="loading-text">En attente de connexion avec l'api...</span>
+    <span class="spinner"></span>
+</div>
+</body>
+<script>
+    function callApi() {
+        fetch('http://localhost:5000/get-content-type-repartition').then(
+            response => {
+                console.log(response)
+                if (response.ok) {
+                    window.location.href = 'index.html'
+                }
+            }
+        );
+    }
+
+    setInterval(callApi, 3000)
+</script>
+</html>
