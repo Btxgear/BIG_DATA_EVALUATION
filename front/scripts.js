@@ -30,10 +30,16 @@ function fetchFromAPI(endpoint) {
         });
 }
 
-fetchFromAPI('http://127.0.0.1:5000/get-content-type-repartition')
-    .then(response => response.text())
-    .then(csvData => {
-        const { labels, data } = parseCSV(csvData);
+fetchFromAPI('http://localhost:5000/get-content-type-repartition')
+    .then(response => {
+        const labels = [];
+        const data = [];
+
+        response.forEach(element => {
+            labels.push(element.type);
+            data.push(element.count);
+        });
+
         const ctx = document.getElementById('contentTypeChart').getContext('2d');
         const contentTypeChart = new Chart(ctx, {
             type: 'pie',
@@ -60,10 +66,16 @@ fetchFromAPI('http://127.0.0.1:5000/get-content-type-repartition')
         });
     });
 
-fetch('data/directorChart.csv')
-    .then(response => response.text())
-    .then(csvData => {
-        const { labels, data } = parseCSV(csvData);
+fetchFromAPI('http://localhost:5000/get-director-repartition')
+    .then(response => {
+        labels = [];
+        data = [];
+
+        response.forEach(element => {
+            labels.push(element.director);
+            data.push(element.count);
+        });
+        
         const ctx = document.getElementById('directorChart').getContext('2d');
         const directorChart = new Chart(ctx, {
             type: 'bar',
