@@ -1,0 +1,103 @@
+body {
+    background-color: #221F1F;
+    color: white;
+}
+
+.title-background {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.title-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('img/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35;
+    z-index: -1;
+}
+
+#logo {
+    width: 120px;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+    animation: neonGlow 1s infinite alternate;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.6));
+}
+
+@keyframes neonGlow {
+    from {
+        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(255, 0, 0, 0.2));
+    }
+    to {
+        filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.8));
+    }
+}
+
+.title {
+    text-align: center;
+    padding-top: 150px;
+    padding-bottom: 30px;
+}
+
+#contentTypeChart,
+#releaseYearChart,
+#directorChart,
+#dateAddedChart {
+    width: 500px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+#countryChart {
+    width: 80%;
+    margin: 0 auto;
+    height: 200px;
+    max-height: 200px;
+    padding-bottom: 10px;
+}
+
+#releaseYearChart {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+.download-btn {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #E50914;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+
+.download-btn-2 {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid #E50914;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}

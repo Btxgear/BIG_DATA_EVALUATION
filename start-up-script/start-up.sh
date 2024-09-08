@@ -1,11 +1,2 @@
 #!/bin/bash
-bash /root/start-hadoop.sh
-hdfs dfs -mkdir -p input
-hdfs dfs -put netflix-data.csv input
-spark-submit --class spark.batch.DataCleaner --master yarn /root/netflix_processing.jar input/netflix-data.csv netflix_cleaned # CLEANING DATA
-spark-submit --class spark.batch.ContentTypeRepartition --master yarn /root/netflix_processing.jar netflix_cleaned content_type_repartition # CONTENT TYPE REPARTITION
-spark-submit --class spark.batch.CountryRepartition --master yarn /root/netflix_processing.jar netflix_cleaned country_repartition # COUNTRY REPARTITION
-spark-submit --class spark.batch.YearsRepartition --master yarn /root/netflix_processing.jar netflix_cleaned release_year_repartition # RELEASE YEAR REPARTITION
-spark-submit --class spark.batch.DirectorRepartition --master yarn /root/netflix_processing.jar netflix_cleaned director_repartition # DIRECTOR ANALYSIS
-# spark-submit --class spark.batch.AddedDateRepartition --master yarn /root/netflix_processing.jar netflix_cleaned added_date_repartition # DATE ADDED DISTRIBUTION
-python3 /root/api/bigdata_evaluation.py
+service ssh start;bash /root/start-hadoop.sh >> /root/hadoop.log;sleep 10;hdfs dfs -mkdir -p /user/root >> /root/hadoop.log;hdfs dfsadmin -safemode leave >> /root/hadoop.log;hdfs dfs -mkdir -p input >> /root/hadoop.log;hdfs dfs -put netflix-data.csv input >> /root/hadoop.log;spark-submit --class spark.batch.DataCleaner --master yarn /root/netflix_processing.jar input/netflix-data.csv netflix_cleaned;spark-submit --class spark.batch.ContentTypeRepartition --master yarn /root/netflix_processing.jar netflix_cleaned content_type_repartition;spark-submit --class spark.batch.CountryRepartition --master yarn /root/netflix_processing.jar netflix_cleaned country_repartition;spark-submit --class spark.batch.YearsRepartition --master yarn /root/netflix_processing.jar netflix_cleaned release_year_repartition;spark-submit --class spark.batch.DirectorRepartition --master yarn /root/netflix_processing.jar netflix_cleaned director_repartition;pip install flask >> /root/api.log;pip install flask-cors >> /root/api.log;pip install pandas >> /root/api.log;python3 /root/api/bigdata_evaluation.py >> /root/api.log;

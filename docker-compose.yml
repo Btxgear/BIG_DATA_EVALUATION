@@ -44,7 +44,7 @@ services:
       - ./data/netflix-data.csv:/root/netflix-data.csv
       - ./back/api/bigdata_evaluation.py:/root/api/bigdata_evaluation.py
       - ./jar/netflix_processing.jar:/root/netflix_processing.jar
-    command: /bin/bash -c "service ssh start && /root/start-hadoop.sh && tail -f /dev/null"  # Démarre le SSH et Hadoop
+    entrypoint: /root/start-up.sh
 
   front:
     image: nginx:alpine

@@ -1,10 +1,13 @@
 from flask import Flask, send_file, jsonify
+from flask_cors import CORS
 from pyspark.sql import SparkSession
 import tempfile
 import subprocess
 import os
 
+
 app = Flask(__name__)
+CORS(app)
 
 # Initialisation de SparkSession
 spark = SparkSession.builder \
@@ -49,7 +52,7 @@ def get_content_type_repartition():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/get-country-repartition', methods=['GET'])
-def get_content_type_repartition():
+def get_country_repartition():
     try:
         df = spark.read.csv("hdfs://hadoop-master:9000/user/root/country_repartition/", header=True, inferSchema=True)
 
@@ -59,7 +62,7 @@ def get_content_type_repartition():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/get-year-repartition', methods=['GET'])
-def get_country_repartition():
+def get_year_repartition():
     try:
         df = spark.read.csv("hdfs://hadoop-master:9000/user/root/release_year_repartition/", header=True, inferSchema=True)
 
