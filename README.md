@@ -2,11 +2,11 @@
 
 ## SOMMAIRE
 
-1. Introduction
-2. Installation et Configuration
-3. Utilisation du site
+1. [Introduction](#introduction)
+2. [Installation et Configuration](#installation-et-configuration)
+3. [Utilisation du site](#utilisation-du-site)
 
-## 1. INTRODUCTION
+## INTRODUCTION
 
 ### Description du projet
 
@@ -40,7 +40,7 @@ Le projet s’appuie sur une combinaison de technologies pour assurer une archit
 
 ![Architecture du projet](doc-img/archi.png)
 
-### 2. Installation et configuration
+### Installation et configuration
 
 Cette section vous guide à travers les étapes simples pour installer et configurer l’environnement de ce projet. L’objectif est de rendre l’application opérationnelle localement via Docker, en quelques commandes seulement.
 
@@ -100,7 +100,7 @@ Cela arrête tous les conteneurs et libère les ressources utilisées.
 
 Cette section vous donne une vue claire et concise des étapes d’installation et de configuration. Grâce à Docker, le déploiement est simple et ne nécessite que quelques commandes pour rendre l’application opérationnelle.
 
-## 3. Utilisation du site
+## Utilisation du site
 
 Allez sur http://localhost.
 
