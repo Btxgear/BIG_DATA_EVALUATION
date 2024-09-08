@@ -24,36 +24,32 @@
     </div>
     <h2 class="title">Répartition des types de contenu (Films vs Séries TV)</h2>
     <canvas id="contentTypeChart"></canvas>
-    <a href="./data/contentTypeChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a onclick="downloadCSV(contentTypeCSV, 'contentType.csv')" download class="download-btn">Télécharger CSV</a>
 
     <h2 class="title">Analyse des réalisateurs</h2>
     <canvas id="directorChart"></canvas>
-    <a href="./data/directorChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a onclick="downloadCSV(directorCSV, 'director.csv')" download class="download-btn">Télécharger CSV</a>
 
     <h2 class="title">Répartition par pays d'origine</h2>
     <canvas id="countryChart"></canvas>
-    <a href="./data/countryChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a onclick="downloadCSV(countryCSV, 'country.csv')" download class="download-btn">Télécharger CSV</a>
 
     <h2 class="title">Répartition par année de sortie</h2>
     <canvas id="releaseYearChart"></canvas>
-    <a href="./data/releaseYearChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a onclick="downloadCSV(releaseYearCSV, 'releaseYear.csv')" download class="download-btn">Télécharger CSV</a>
 
     <h2 class="title">Distribution des dates d'ajout des contenus</h2>
     <div class="text-center">
         <label for="yearSelect">Sélectionner une année : </label>
         <select id="yearSelect" class="form-select" style="width: 200px; display: inline-block;">
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
         </select>
     </div>
     <canvas id="dateAddedChart"></canvas>
 
-    <a href="./data/dateAddedChart.csv" download class="download-btn">Télécharger CSV</a>
+    <a onclick="downloadCSV(dateAddedCSV, 'dateAdded.csv')" download class="download-btn">Télécharger CSV</a>
 
-    <h3 class="text-center" style="margin-top: 100px;">Dataset utilisé</h3>
-    <a href="./data/netflix-data.csv" download class="download-btn-2">Télécharger le dataset</a>
+    <h3 class="text-center" style="margin-top: 100px;">Dataset nettoyé</h3>
+    <a href="http://localhost:5005/netflix-data-file" download class="download-btn-2">Télécharger le dataset</a>
     
     <script src="scripts.js"></script>
 </body>

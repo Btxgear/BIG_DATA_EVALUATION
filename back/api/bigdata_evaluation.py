@@ -1,4 +1,5 @@
 from flask import Flask, send_file, jsonify
+from pyspark.sql.functions import from_unixtime, col
 from flask_cors import CORS
 from pyspark.sql import SparkSession
 import tempfile
@@ -55,6 +56,8 @@ def get_content_type_repartition():
 def get_country_repartition():
     try:
         df = spark.read.csv("hdfs://hadoop-master:9000/user/root/country_repartition/", header=True, inferSchema=True)
+        # trier le nombre de films par pays du plus grand au plus petit, les 10 premiers
+        df = df.orderBy("count", ascending=False).limit(10)
 
         return df.toPandas().to_json(orient="records")
 
@@ -76,6 +79,9 @@ def get_director_repartition():
     try:
         df = spark.read.csv("hdfs://hadoop-master:9000/user/root/director_repartition/", header=True, inferSchema=True)
 
+        # trier les données par nombre de films réalisés du plus grand au plus petit, les 10 premiers
+        df = df.orderBy("count", ascending=False).limit(10)
+
         return df.toPandas().to_json(orient="records")
 
     except Exception as e:
@@ -86,6 +92,7 @@ def get_added_datetime_distribution():
     try:
         df = spark.read.csv("hdfs://hadoop-master:9000/user/root/added_date_repartition/", header=True, inferSchema=True)
 
+        # Convertir en Pandas pour générer du JSON
         return df.toPandas().to_json(orient="records")
 
     except Exception as e:

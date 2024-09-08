@@ -1,6 +1,7 @@
 spark\batch\DataCleaner.class
-spark\batch\YearsRepartition.class
 spark\batch\DataCleaner$1.class
 spark\batch\DirectorRepartition.class
 spark\batch\ContentTypeRepartition.class
+spark\batch\YearsRepartition.class
 spark\batch\CountryRepartition.class
+spark\batch\AddedDateRepartition.class

@@ -1,20 +1,8 @@
-function parseCSV(csvData) {
-    const rows = csvData.split('\n').slice(1);
-    const labels = [];
-    const data = [];
-
-    if (rows[rows.length - 1] === '') {
-        rows.pop();
-    }
-
-    rows.forEach(row => {
-        const [type, count] = row.split(',');
-        labels.push(type);
-        data.push(count);
-    });
-
-    return { labels, data };
-}
+var contentTypeCSV = null;
+var directorCSV = null;
+var countryCSV = null;
+var releaseYearCSV = null;
+var dateAddedCSV = null;
 
 // Fonction pour faire une requête GET à une API
 function fetchFromAPI(endpoint) {
@@ -31,8 +19,34 @@ function fetchFromAPI(endpoint) {
         });
 }
 
-fetchFromAPI('http://localhost:5000/get-content-type-repartition')
+function jsonToCSV(jsonData) {
+    const csvRows = [];
+    const headers = Object.keys(jsonData[0]);
+    
+    csvRows.push(headers.join(','));
+
+    jsonData.forEach(row => {
+        const values = headers.map(key => {
+            return row[key];
+        });
+        csvRows.push(values.join(','));
+    });
+
+    return csvRows.join('\n');
+}
+
+function downloadCSV(csvData, filename) {
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+fetchFromAPI('http://localhost:5005/get-content-type-repartition')
     .then(response => {
+        contentTypeCSV = jsonToCSV(response);
         const labels = [];
         const data = [];
 
@@ -67,10 +81,13 @@ fetchFromAPI('http://localhost:5000/get-content-type-repartition')
         });
     });
 
-fetchFromAPI('http://localhost:5000/get-director-repartition')
+fetchFromAPI('http://localhost:5005/get-director-repartition')
     .then(response => {
+        directorCSV = jsonToCSV(response);
         labels = [];
         data = [];
+
+        response = response.filter(element => element.director !== "réalisateur non défini");
 
         response.forEach(element => {
             labels.push(element.director);
@@ -129,8 +146,9 @@ fetchFromAPI('http://localhost:5000/get-director-repartition')
         });
     });
 
-fetchFromAPI('http://localhost:5000/get-country-repartition')
+fetchFromAPI('http://localhost:5005/get-country-repartition')
     .then(response => {
+        countryCSV = jsonToCSV(response);
         labels = [];
         data = [];
 
@@ -189,8 +207,9 @@ fetchFromAPI('http://localhost:5000/get-country-repartition')
         });
     });
 
-fetchFromAPI('http://localhost:5000/get-year-repartition')
+fetchFromAPI('http://localhost:5005/get-year-repartition')
     .then(response => {
+        releaseYearCSV = jsonToCSV(response);
         labels = [];
         data = [];
 
@@ -250,13 +269,38 @@ fetchFromAPI('http://localhost:5000/get-year-repartition')
         });
     });
 
-fetch('data/dateAddedChart.csv')
-    .then(response => response.text())
-    .then(csvData => {
+fetchFromAPI('http://localhost:5005/get-added-datetime-distribution')
+    .then(response => {
+        response.forEach(element => {
+            const date = new Date(element.year_month);
+            element.year_month = date.toISOString().slice(0, 7);
+        });
+
+        const uniqueYears = [...new Set(response.map(item => item.year_month.slice(0, 4)))].sort();
+
         const yearSelect = document.getElementById('yearSelect');
 
+        uniqueYears.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        });
+        
+        dateAddedCSV = jsonToCSV(response);
+
+        labels = [];
+        data = [];
+
+        response.forEach(element => {
+            labels.push(element.year_month);
+            data.push(element.count);
+        });
+
+        labels = labels.reverse();
+        data = data.reverse();
+
         function filterByYear(year) {
-            const { labels, data } = parseCSV(csvData);
             const filteredLabels = [];
             const filteredData = [];
             labels.forEach((label, index) => {
@@ -303,7 +347,6 @@ fetch('data/dateAddedChart.csv')
             updateChart(filteredLabels, filteredData, selectedYear);
         });
 
-        const { labels, data } = parseCSV(csvData);
         const ctx = document.getElementById('dateAddedChart').getContext('2d');
         const dateAddedChart = new Chart(ctx, {
             type: 'bar',

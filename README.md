@@ -88,7 +88,7 @@ Aucun fichier de configuration supplémentaire n’est requis pour le lancement 
 Une fois que Docker Compose a démarré tous les services, vous pouvez y accéder via les adresses suivantes :
 
 - Frontend (interface utilisateur) : Disponible sur http://localhost, cette interface permet de visualiser les analyses de données sous forme de graphiques.
-- Backend (API Flask) : L’API est disponible sur http://localhost:5000 pour interagir avec les données traitées.
+- Backend (API Flask) : L’API est disponible sur http://localhost:5005 pour interagir avec les données traitées.
 
 ### Arrêt des services
 

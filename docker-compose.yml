@@ -34,7 +34,7 @@ services:
       - "8088:8088"
       - "7077:7077"
       - "16010:16010"
-      - "5000:5000" # Port pour l'API Flask
+      - "5005:5000" # Port pour l'API Flask
     networks:
       - hadoop
     tty: true
@@ -44,7 +44,7 @@ services:
       - ./data/netflix-data.csv:/root/netflix-data.csv
       - ./back/api/bigdata_evaluation.py:/root/api/bigdata_evaluation.py
       - ./jar/netflix_processing.jar:/root/netflix_processing.jar
-    entrypoint: /root/start-up.sh
+    entrypoint: /bin/bash -c "chmod +x /root/start-up.sh && /root/start-up.sh && tail -f /dev/null"
 
   front:
     image: nginx:alpine

@@ -1,19 +1,17 @@
 package spark.batch;
 
 import java.io.Serializable;
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.functions;
-
+import org.apache.spark.sql.functions; // Import Spark SQL functions
 import com.google.common.base.Preconditions;
 
 public class AddedDateRepartition implements Serializable {
 
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L; // Adding serialVersionUID for Serializable
 
         public static void main(String[] args) {
                 Preconditions.checkArgument(args.length > 1,
@@ -22,7 +20,7 @@ public class AddedDateRepartition implements Serializable {
         }
 
         public void run(String inputDirectoryPath, String outputFilePath) {
-                // Configuration pour le mode cluster YARN
+                // Spark configuration
                 SparkConf conf = new SparkConf()
                                 .setAppName(AddedDateRepartition.class.getName())
                                 .set("spark.yarn.queue", "default");
@@ -30,35 +28,24 @@ public class AddedDateRepartition implements Serializable {
                 JavaSparkContext sc = new JavaSparkContext(conf);
                 SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
-                // Charger tous les fichiers CSV dans le répertoire d'entrée dans un DataFrame
+                // Load the CSV file into a DataFrame
                 Dataset<Row> df = spark.read()
                                 .option("header", "true")
                                 .option("inferSchema", "true")
                                 .option("sep", ";")
                                 .csv(inputDirectoryPath);
 
-                // Assurer que la colonne "date_added" est de type DateType
-                Dataset<Row> dfWithDate = df.withColumn("date_added", functions.to_date(df.col("date_added")));
-
-                // Nombre de contenus ajoutés chaque mois
-                Dataset<Row> result = dfWithDate
-                                .filter("date_added is not null") // Filtrer les lignes avec des dates nulles
-                                .withColumn("month", functions.format_number(functions.month(df.col("date_added"))))
-                                .withColumn("year", functions.year(df.col("date_added")))
-                                .withColumn("year_month",
-                                                functions.concat_ws("-", dfWithDate.col("year"),
-                                                                dfWithDate.col("month")))
+                // Convert 'date_added' to a date type and extract year and month
+                Dataset<Row> result = df.withColumn("year_month",
+                                functions.date_format(functions.col("date_added"), "yyyy-MM"))
                                 .groupBy("year_month")
                                 .count()
-                                .orderBy(functions.asc("year_month"));
+                                .orderBy(functions.desc("year_month"));
 
-                // Renommer la colonne de comptage
-                result = result.withColumnRenamed("count", "count");
-
-                // Sauvegarder les résultats dans un fichier de sortie
+                // Save the results as CSV
                 result.write().option("header", "true").csv(outputFilePath);
 
-                // Fermer la session Spark et le contexte Spark
+                // Close Spark session and context
                 spark.stop();
                 sc.close();
         }
