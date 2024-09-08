@@ -48,8 +48,8 @@ Cette section vous guide à travers les étapes simples pour installer et config
 
 Avant de commencer, assurez-vous que les éléments suivants sont installés sur votre machine :
 
-- Docker : Docker est utilisé pour créer des conteneurs qui isolent les différents composants du projet. Installer ![Docker](https://docs.docker.com/get-started/get-docker/)
-- Docker Compose : Utilisé pour orchestrer et gérer les multiples conteneurs nécessaires pour exécuter le projet. Installer ![Docker Compose](https://docs.docker.com/compose/install/)
+- Docker : Docker est utilisé pour créer des conteneurs qui isolent les différents composants du projet. Installer [Docker](https://docs.docker.com/get-started/get-docker/)
+- Docker Compose : Utilisé pour orchestrer et gérer les multiples conteneurs nécessaires pour exécuter le projet. Installer [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Installation
 
