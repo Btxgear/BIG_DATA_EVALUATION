@@ -27,6 +27,7 @@ function fetchFromAPI(endpoint) {
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
+            window.location.href = "loading.html";
         });
 }
 
@@ -75,7 +76,7 @@ fetchFromAPI('http://localhost:5000/get-director-repartition')
             labels.push(element.director);
             data.push(element.count);
         });
-        
+
         const ctx = document.getElementById('directorChart').getContext('2d');
         const directorChart = new Chart(ctx, {
             type: 'bar',
