@@ -40,7 +40,7 @@ Le projet s’appuie sur une combinaison de technologies pour assurer une archit
 
 ![Architecture du projet](doc-img/archi.png)
 
-### Installation et configuration
+## INSTALLATION ET CONFIGURATION
 
 Cette section vous guide à travers les étapes simples pour installer et configurer l’environnement de ce projet. L’objectif est de rendre l’application opérationnelle localement via Docker, en quelques commandes seulement.
 
@@ -100,7 +100,7 @@ Cela arrête tous les conteneurs et libère les ressources utilisées.
 
 Cette section vous donne une vue claire et concise des étapes d’installation et de configuration. Grâce à Docker, le déploiement est simple et ne nécessite que quelques commandes pour rendre l’application opérationnelle.
 
-## Utilisation du site
+## UTILISATION DU SITE
 
 Allez sur http://localhost.
 
