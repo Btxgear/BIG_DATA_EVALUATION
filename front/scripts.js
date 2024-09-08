@@ -128,10 +128,15 @@ fetchFromAPI('http://localhost:5000/get-director-repartition')
         });
     });
 
-fetch('data/countryChart.csv')
-    .then(response => response.text())
-    .then(csvData => {
-        const { labels, data } = parseCSV(csvData);
+fetchFromAPI('http://localhost:5000/get-country-repartition')
+    .then(response => {
+        labels = [];
+        data = [];
+
+        response.forEach(element => {
+            labels.push(element.country);
+            data.push(element.count);
+        });
         const ctx = document.getElementById('countryChart').getContext('2d');
         const countryChart = new Chart(ctx, {
             type: 'bar',
@@ -183,10 +188,15 @@ fetch('data/countryChart.csv')
         });
     });
 
-fetch('data/releaseYearChart.csv')
-    .then(response => response.text())
-    .then(csvData => {
-        const { labels, data } = parseCSV(csvData);
+fetchFromAPI('http://localhost:5000/get-year-repartition')
+    .then(response => {
+        labels = [];
+        data = [];
+
+        response.forEach(element => {
+            labels.push(element.release_year);
+            data.push(element.count);
+        });
         const ctx = document.getElementById('releaseYearChart').getContext('2d');
         const releaseYearChart = new Chart(ctx, {
             type: 'line',
